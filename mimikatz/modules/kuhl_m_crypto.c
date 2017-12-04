@@ -920,7 +920,7 @@ void kuhl_m_crypto_l_mdr(LPCWSTR szMdr, SCARDCONTEXT ctxScard, SCARDHANDLE hScar
 
 				enuma(&cd, NULL);
 				enuma(&cd, "mscp");
-				enuma(&cd, "mimikatz");
+				enuma(&cd, MIMIKATZ_A);
 				
 
 

