@@ -47,7 +47,7 @@ void kprintf(PCWCHAR format, ...)
 		}
 	}
 #endif
-#ifndef _POWERKATZ
+#if !defined(_POWERKATZ) && !defined(_MIMIKATZ_STATICLIB)
 #ifndef MIMIKATZ_W2000_SUPPORT
 	else
 #endif
@@ -99,7 +99,7 @@ int previousStdOut, previousStdErr;
 UINT previousConsoleOutput;
 void kull_m_output_init()
 {
-#ifndef _POWERKATZ
+#if !defined(_POWERKATZ) && !defined(_MIMIKATZ_STATICLIB)
 #ifndef _WINDLL
 	previousStdOut = _setmode(_fileno(stdout), _O_U8TEXT);
 	previousStdErr = _setmode(_fileno(stderr), _O_U8TEXT);
@@ -111,11 +111,18 @@ void kull_m_output_init()
 
 void kull_m_output_clean()
 {
-#ifndef _POWERKATZ
+#if !defined(_POWERKATZ) && !defined(_MIMIKATZ_STATICLIB)
 #ifndef _WINDLL
 	_setmode(_fileno(stdout), previousStdOut);
 	_setmode(_fileno(stderr), previousStdErr);
 #endif
 	SetConsoleOutputCP(previousConsoleOutput);
+#endif
+#ifdef _MIMIKATZ_STATICLIB
+	if (outputBuffer)
+	{
+		LocalFree(outputBuffer);
+		outputBuffer = NULL;
+	}
 #endif
 }

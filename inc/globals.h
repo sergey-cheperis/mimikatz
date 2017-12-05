@@ -22,7 +22,9 @@
 //#define SERVICE_INCONTROL
 //#define LSASS_DECRYPT
 #define NET_MODULE
+#ifndef _MIMIKATZ_STATICLIB
 #define SQLITE3_OMIT
+#endif
 #ifdef _M_X64
 	#define MIMIKATZ_ARCH L"x64"
 #else ifdef _M_IX86

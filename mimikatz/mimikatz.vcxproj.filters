@@ -503,6 +503,7 @@
     <ClInclude Include="..\modules\kull_m_sr98.h">
       <Filter>common modules</Filter>
     </ClInclude>
+    <ClInclude Include="mimikatz-staticlib.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="local modules">
@@ -540,11 +541,5 @@
     <Filter Include="local modules\lsadump">
       <UniqueIdentifier>{3b2bcf11-3674-4ee4-949c-491c8c5efd34}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="mimikatz.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="mimikatz.ico" />
   </ItemGroup>
 </Project>
