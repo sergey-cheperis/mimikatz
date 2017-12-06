@@ -454,6 +454,7 @@ PKULL_M_CRED_VAULT_CREDENTIAL kull_m_cred_vault_credential_create(PVOID data/*, 
 		credential->__cbElements = credential->dwAttributesMapSize / sizeof(KULL_M_CRED_VAULT_CREDENTIAL_ATTRIBUTE_MAP);
 		if(credential->attributes = (PKULL_M_CRED_VAULT_CREDENTIAL_ATTRIBUTE * ) LocalAlloc(LPTR, (credential->__cbElements + ((credential->unk0 < 4) ? 1 : 0)) * sizeof(PKULL_M_CRED_VAULT_CREDENTIAL_ATTRIBUTE)))
 		{
+			attribute = NULL;
 			for(i = 0; i < credential->__cbElements; i++)
 			{
 				if(credential->attributes[i] = (PKULL_M_CRED_VAULT_CREDENTIAL_ATTRIBUTE) LocalAlloc(LPTR, sizeof(KULL_M_CRED_VAULT_CREDENTIAL_ATTRIBUTE)))

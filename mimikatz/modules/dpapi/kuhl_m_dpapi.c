@@ -133,7 +133,7 @@ NTSTATUS kuhl_m_dpapi_masterkey(int argc, wchar_t * argv[])
 {
 	PKULL_M_DPAPI_MASTERKEYS masterkeys;
 	PBYTE buffer, pHash = NULL, pSystem = NULL;
-	PVOID output, derivedKey;
+	PVOID output, derivedKey = NULL;
 	PPVK_FILE_HDR pvkBuffer;
 	DWORD szBuffer, szPvkBuffer, cbHash = 0, cbSystem = 0, cbSystemOffset = 0, cbOutput;
 	PPOLICY_DNS_DOMAIN_INFO pPolicyDnsDomainInfo = NULL;

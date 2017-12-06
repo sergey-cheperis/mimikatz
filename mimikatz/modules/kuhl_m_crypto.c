@@ -1816,8 +1816,8 @@ NTSTATUS kuhl_m_crypto_c_cert_to_hw(int argc, wchar_t * argv[])
 	HCRYPTKEY hCapiKey;
 	NCRYPT_PROV_HANDLE hCngProv;
 	NCRYPT_KEY_HANDLE hCngKey;
-	PBYTE keyblob;
-	DWORD dwkeyblob;
+	PBYTE keyblob = NULL;
+	DWORD dwkeyblob = 0;
 	SECURITY_STATUS nCryptReturn;
 
 	LPSTR aPin = NULL;

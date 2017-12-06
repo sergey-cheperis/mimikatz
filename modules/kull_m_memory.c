@@ -171,7 +171,7 @@ BOOL kull_m_memory_search(IN PKULL_M_MEMORY_ADDRESS Pattern, IN SIZE_T Length, I
 {
 	BOOL status = FALSE;
 	KULL_M_MEMORY_SEARCH  sBuffer = {{{NULL, &KULL_M_MEMORY_GLOBAL_OWN_HANDLE}, Search->kull_m_memoryRange.size}, NULL};
-	PBYTE CurrentPtr;
+	PBYTE CurrentPtr = NULL;
 	PBYTE limite = (PBYTE) Search->kull_m_memoryRange.kull_m_memoryAdress.address + Search->kull_m_memoryRange.size;
 
 	switch(Pattern->hMemory->type)
