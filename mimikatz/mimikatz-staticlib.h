@@ -27,3 +27,4 @@ extern "C"
 #pragma comment(lib, "winsta.lib")
 #pragma comment(lib, "wldap32.lib")
 #pragma comment(lib, "fltlib.lib")
+#pragma comment(lib, "cabinet.lib")
