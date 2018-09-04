@@ -1632,7 +1632,7 @@ BOOL kuhl_m_lsadump_dcshadow_build_replication_value_supplementalCredentials_Use
 	PVOID argData;
 	DWORD argDwData, argDwType, dwPackageString = 0, i;
 	PUSER_PROPERTY property;
-	PBYTE pStrings;
+	PBYTE pStrings = NULL;
 
 	*dwProperties = FIELD_OFFSET(USER_PROPERTIES, UserProperties) + 1;
 	va_start(vaList, count);
@@ -1769,7 +1769,7 @@ BOOL kuhl_m_lsadump_dcshadow_build_replication_value_supplementalCredentials_val
 		*aes256 = NULL;
 		*aes128 = NULL;
 
-		ret = swscanf_s(theArg, L"%[^:]:%[^:]:%s", bSalt, ARRAYSIZE(bSalt), bAes256, ARRAYSIZE(bAes256), bAes128, ARRAYSIZE(bAes128));
+		ret = swscanf_s(theArg, L"%[^:]:%[^:]:%s", bSalt, (unsigned)ARRAYSIZE(bSalt), bAes256, (unsigned)ARRAYSIZE(bAes256), bAes128, (unsigned)ARRAYSIZE(bAes128));
 		if(ret > 1)
 		{
 			RtlInitUnicodeString(&uSalt, bSalt);
@@ -2841,7 +2841,7 @@ ULONG SRV_IDL_DRSBind(handle_t rpc_handle, UUID *puuidClientDsa, DRS_EXTENSIONS 
 		{
 			if(((PDRS_EXTENSIONS_INT) pextClient)->dwFlags & DRS_EXT_STRONG_ENCRYPTION)
 			{
-				size = ((PDRS_EXTENSIONS_INT) pextClient)->cb >= FIELD_OFFSET(DRS_EXTENSIONS_INT, dwFlagsExt) ? FIELD_OFFSET(DRS_EXTENSIONS_INT, dwFlagsExt) : FIELD_OFFSET(DRS_EXTENSIONS_INT, SiteObjGuid);
+				size = ((PDRS_EXTENSIONS_INT) pextClient)->cb >= (DWORD)FIELD_OFFSET(DRS_EXTENSIONS_INT, dwFlagsExt) ? FIELD_OFFSET(DRS_EXTENSIONS_INT, dwFlagsExt) : FIELD_OFFSET(DRS_EXTENSIONS_INT, SiteObjGuid);
 				if(*ppextServer = (DRS_EXTENSIONS *) midl_user_allocate(size))
 				{
 					RtlZeroMemory(*ppextServer, size);
@@ -2849,7 +2849,7 @@ ULONG SRV_IDL_DRSBind(handle_t rpc_handle, UUID *puuidClientDsa, DRS_EXTENSIONS 
 					((PDRS_EXTENSIONS_INT) *ppextServer)->dwFlags = DRS_EXT_BASE | DRS_EXT_RESTORE_USN_OPTIMIZATION | DRS_EXT_INSTANCE_TYPE_NOT_REQ_ON_MOD | DRS_EXT_STRONG_ENCRYPTION | DRS_EXT_GETCHGREQ_V8;
 					if(pDCShadowDomainInfoInUse->fUseSchemaSignature)
 						((PDRS_EXTENSIONS_INT) *ppextServer)->dwFlags |= DRS_EXT_POST_BETA3;
-					if(size >= FIELD_OFFSET(DRS_EXTENSIONS_INT, dwFlagsExt))
+					if(size >= (DWORD)FIELD_OFFSET(DRS_EXTENSIONS_INT, dwFlagsExt))
 						((PDRS_EXTENSIONS_INT) *ppextServer)->dwReplEpoch = (((PDRS_EXTENSIONS_INT) pextClient)->dwReplEpoch) ? (((PDRS_EXTENSIONS_INT) pextClient)->dwReplEpoch) : pDCShadowDomainInfoInUse->dwReplEpoch;
 				}
 				if(*phDrs = MIDL_user_allocate(sizeof(DWORD)))

@@ -431,7 +431,7 @@ const KIWI_DATETIME_FORMATS STRING_TO_FILETIME_FORMATS[] = {
 BOOL kull_m_string_stringToFileTime(LPCWSTR string, PFILETIME filetime)
 {
 	BOOL status = FALSE;
-	const KIWI_DATETIME_FORMATS * cur;
+	const KIWI_DATETIME_FORMATS * cur = NULL;
 	SYSTEMTIME st;
 	FILETIME ft, lft;
 	LONGLONG diff;

@@ -108,7 +108,7 @@ BOOL rdm_send_receive(HANDLE hFile, BYTE ctl, LPCVOID in, BYTE szIn, LPBYTE *out
 												case 0x94: error = L"object has been locked"; break;
 												case 0x95: error = L"lock operation did not succeed"; break;
 												case 0x96: error = L"operation did not succeed"; break;
-												default: L"unknow error code!";
+												default: error = L"unknow error code!";
 												}
 												PRINT_ERROR(L"Command failure: 0x%02x - %s\n", data[12], error);
 											}
