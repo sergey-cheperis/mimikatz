@@ -5,19 +5,13 @@
 */
 #pragma once
 #include "kuhl_m.h"
-#include <cardmod.h>
 #include "../modules/kull_m_crypto.h"
-#include "../modules/kull_m_process.h"
-#include "../modules/kull_m_service.h"
-#include "../modules/kull_m_memory.h"
-#include "../modules/kull_m_patch.h"
 #include "../modules/kull_m_string.h"
 #include "../modules/kull_m_file.h"
 #include "../modules/kull_m_registry.h"
-
+#include "crypto/kuhl_m_crypto_sc.h"
 #include "crypto/kuhl_m_crypto_extractor.h"
-
-typedef BOOL			(WINAPI * PCP_EXPORTKEY)					(IN HCRYPTPROV hProv, IN HCRYPTKEY hKey, IN HCRYPTKEY hPubKey, IN DWORD dwBlobType, IN DWORD dwFlags, OUT LPBYTE pbData, IN OUT LPDWORD pcbDataLen);
+#include "crypto/kuhl_m_crypto_patch.h"
 
 typedef struct _KUHL_M_CRYPTO_DWORD_TO_DWORD {
 	PCWSTR	name;
@@ -55,16 +49,10 @@ NTSTATUS kuhl_m_crypto_l_providers(int argc, wchar_t * argv[]);
 NTSTATUS kuhl_m_crypto_l_stores(int argc, wchar_t * argv[]);
 NTSTATUS kuhl_m_crypto_l_certificates(int argc, wchar_t * argv[]);
 NTSTATUS kuhl_m_crypto_l_keys(int argc, wchar_t * argv[]);
-NTSTATUS kuhl_m_crypto_l_sc(int argc, wchar_t * argv[]);
 NTSTATUS kuhl_m_crypto_hash(int argc, wchar_t * argv[]);
 NTSTATUS kuhl_m_crypto_system(int argc, wchar_t * argv[]);
 NTSTATUS kuhl_m_crypto_c_sc_auth(int argc, wchar_t * argv[]);
 NTSTATUS kuhl_m_crypto_c_cert_to_hw(int argc, wchar_t * argv[]);
-
-NTSTATUS kuhl_m_crypto_p_capi(int argc, wchar_t * argv[]);
-NTSTATUS kuhl_m_crypto_p_cng(int argc, wchar_t * argv[]);
-
-NTSTATUS kuhl_m_crypto_extract(int argc, wchar_t * argv[]);
 
 BOOL WINAPI kuhl_m_crypto_l_stores_enumCallback_print(const void *pvSystemStore, DWORD dwFlags, PCERT_SYSTEM_STORE_INFO pStoreInfo, void *pvReserved, void *pvArg);
 
@@ -76,20 +64,5 @@ wchar_t * kuhl_m_crypto_generateFileName(const wchar_t * term0, const wchar_t * 
 void kuhl_m_crypto_file_rawData(PKUHL_M_CRYPTO_CERT_PROP prop, PCWCHAR inFile, BOOL isExport);
 void kuhl_m_crypto_l_keys_capi(LPCWSTR szContainer, LPCWSTR szProvider, DWORD dwProvType, DWORD dwFlags, BOOL export, LPCWSTR szStore);
 void kuhl_m_crypto_l_keys_cng(LPCWSTR szContainer, LPCWSTR szProvider, DWORD dwFlags, BOOL export, LPCWSTR szStore);
-void kuhl_m_crypto_l_mdr(LPCWSTR szMdr, SCARDCONTEXT ctxScard, SCARDHANDLE hScard, LPCWSTR szModel, LPCBYTE pbAtr, DWORD cbAtr);
-DWORD kuhl_m_crypto_l_sc_provtypefromname(LPCWSTR szProvider);
-PWSTR kuhl_m_crypto_l_sc_containerFromReader(LPCWSTR reader);
 
-typedef struct _KIWI_CRYPT_SEARCH {
-	PKULL_M_MEMORY_HANDLE hMemory;
-	WORD Machine;
-	KIWI_CRYPTKEY32 ProcessKiwiCryptKey32;
-#ifdef _M_X64
-	KIWI_CRYPTKEY64 ProcessKiwiCryptKey64;
-#endif
-	BOOL bAllProcessKiwiCryptKey;
-	DWORD myPid;
-	DWORD prevPid;
-	DWORD currPid;
-	PCUNICODE_STRING processName;
-} KIWI_CRYPT_SEARCH, *PKIWI_CRYPT_SEARCH;
+BOOL kuhl_m_crypto_c_sc_auth_quickEncode(__in LPCSTR lpszStructType, __in const void *pvStructInfo, PDATA_BLOB data);

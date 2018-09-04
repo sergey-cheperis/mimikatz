@@ -5,7 +5,7 @@
 */
 #pragma once
 #include "globals.h"
-#include "kull_m_busylight_hid.h"
+#include "kull_m_hid.h"
 
 #define BUSYLIGHT_INPUT_REPORT_SIZE				65
 #define BUSYLIGHT_OUTPUT_REPORT_SIZE			65
@@ -42,7 +42,7 @@ typedef enum _BUSYLIGHT_MEDIA_SOUND_JINGLE {
 	BUSYLIGHT_MEDIA_JINGLE_IM2 =				(10 << 3),
 } BUSYLIGHT_MEDIA_SOUND_JINGLE, *PBUSYLIGHT_MEDIA_SOUND_JINGLE;
 typedef const BUSYLIGHT_MEDIA_SOUND_JINGLE *PCBUSYLIGHT_MEDIA_SOUND_JINGLE;
-#define BUSYLIGHT_MEDIA(sound, volume) (BUSYLIGHT_MEDIA_MASK | sound | volume)
+#define BUSYLIGHT_MEDIA(sound, volume) (BUSYLIGHT_MEDIA_MASK | (sound) | (volume))
 #define BUSYLIGHT_MEDIA_MUTE BUSYLIGHT_MEDIA(BUSYLIGHT_MEDIA_SOUND_MUTE, BUSYLIGHT_MEDIA_VOLUME_0_MUTE)
 
 typedef struct _BUSYLIGHT_DEVICE_ID {

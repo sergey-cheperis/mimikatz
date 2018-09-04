@@ -30,6 +30,9 @@
 #include "modules/kuhl_m_sid.h"
 #include "modules/kuhl_m_iis.h"
 #include "modules/kuhl_m_rpc.h"
+#include "modules/kuhl_m_sr98.h"
+#include "modules/kuhl_m_rdm.h"
+#include "modules/kuhl_m_acr.h"
 
 #include <io.h>
 #include <fcntl.h>

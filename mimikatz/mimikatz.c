@@ -33,6 +33,9 @@ const KUHL_M * mimikatz_modules[] = {
 	&kuhl_m_sid,
 	&kuhl_m_iis,
 	&kuhl_m_rpc,
+	&kuhl_m_sr98,
+	&kuhl_m_rdm,
+	&kuhl_m_acr,
 };
 
 #ifndef _MIMIKATZ_STATICLIB
@@ -78,7 +81,7 @@ void mimikatz_begin()
 #ifndef _MIMIKATZ_STATICLIB
 	kprintf(L"\n"
 		L"  .#####.   " MIMIKATZ_FULL L"\n"
-		L" .## ^ ##.  " MIMIKATZ_SECOND L" - (oe.eo)\n"
+		L" .## ^ ##.  " MIMIKATZ_SECOND L" - (oe.eo) ** Kitten Edition **\n"
 		L" ## / \\ ##  /*** Benjamin DELPY `gentilkiwi` ( benjamin@gentilkiwi.com )\n"
 		L" ## \\ / ##       > http://blog.gentilkiwi.com/mimikatz\n"
 		L" '## v ##'       Vincent LE TOUX             ( vincent.letoux@gmail.com )\n"
@@ -116,7 +119,7 @@ NTSTATUS mimikatz_initOrClean(BOOL Init)
 	if(Init)
 	{
 		RtlGetNtVersionNumbers(&MIMIKATZ_NT_MAJOR_VERSION, &MIMIKATZ_NT_MINOR_VERSION, &MIMIKATZ_NT_BUILD_NUMBER);
-		MIMIKATZ_NT_BUILD_NUMBER &= 0x00003fff;
+		MIMIKATZ_NT_BUILD_NUMBER &= 0x00007fff;
 		offsetToFunc = FIELD_OFFSET(KUHL_M, pInit);
 		hr = CoInitializeEx(NULL, COINIT_MULTITHREADED);
 		if(FAILED(hr))
@@ -150,7 +153,7 @@ NTSTATUS mimikatz_initOrClean(BOOL Init)
 
 NTSTATUS mimikatz_dispatchCommand(wchar_t * input)
 {
-	NTSTATUS status;
+	NTSTATUS status = STATUS_UNSUCCESSFUL;
 	PWCHAR full;
 	if(full = kull_m_file_fullPath(input))
 	{
