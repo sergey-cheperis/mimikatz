@@ -22,7 +22,7 @@ const KUHL_M * mimikatz_modules[] = {
 #ifndef _MIMIKATZ_STATICLIB
 	&kuhl_m_minesweeper,
 #endif
-#ifdef NET_MODULE
+#if defined(NET_MODULE)
 	&kuhl_m_net,
 #endif
 	&kuhl_m_dpapi,
@@ -43,7 +43,7 @@ int wmain(int argc, wchar_t * argv[])
 {
 	NTSTATUS status = STATUS_SUCCESS;
 	int i;
-#ifndef _POWERKATZ
+#if !defined(_POWERKATZ)
 	size_t len;
 	wchar_t input[0xffff];
 #endif
@@ -53,7 +53,7 @@ int wmain(int argc, wchar_t * argv[])
 		kprintf(L"\n" MIMIKATZ L"(" MIMIKATZ_AUTO_COMMAND_STRING L") # %s\n", argv[i]);
 		status = mimikatz_dispatchCommand(argv[i]);
 	}
-#ifndef _POWERKATZ
+#if !defined(_POWERKATZ)
 	while (status != STATUS_FATAL_APP_EXIT)
 	{
 		kprintf(L"\n" MIMIKATZ L" # "); fflush(stdin);
@@ -81,7 +81,7 @@ void mimikatz_begin()
 #ifndef _MIMIKATZ_STATICLIB
 	kprintf(L"\n"
 		L"  .#####.   " MIMIKATZ_FULL L"\n"
-		L" .## ^ ##.  " MIMIKATZ_SECOND L" - (oe.eo) ** Kitten Edition **\n"
+		L" .## ^ ##.  " MIMIKATZ_SECOND L" - (oe.eo)\n"
 		L" ## / \\ ##  /*** Benjamin DELPY `gentilkiwi` ( benjamin@gentilkiwi.com )\n"
 		L" ## \\ / ##       > http://blog.gentilkiwi.com/mimikatz\n"
 		L" '## v ##'       Vincent LE TOUX             ( vincent.letoux@gmail.com )\n"
@@ -123,7 +123,7 @@ NTSTATUS mimikatz_initOrClean(BOOL Init)
 		offsetToFunc = FIELD_OFFSET(KUHL_M, pInit);
 		hr = CoInitializeEx(NULL, COINIT_MULTITHREADED);
 		if(FAILED(hr))
-#if !defined(_POWERKATZ) && !defined(_MIMIKATZ_STATICLIB)
+#if defined(_POWERKATZ)
 			if(hr != RPC_E_CHANGED_MODE)
 #endif
 				PRINT_ERROR(L"CoInitializeEx: %08x\n", hr);
@@ -242,7 +242,7 @@ NTSTATUS mimikatz_doLocal(wchar_t * input)
 	return status;
 }
 
-#ifdef _POWERKATZ
+#if defined(_POWERKATZ)
 __declspec(dllexport) wchar_t * powershell_reflective_mimikatz(LPCWSTR input)
 {
 	int argc = 0;
@@ -260,32 +260,19 @@ __declspec(dllexport) wchar_t * powershell_reflective_mimikatz(LPCWSTR input)
 }
 #endif
 
-#ifdef _WINDLL
-void reatachIoHandle(DWORD nStdHandle, int flags, const char *Mode, FILE *file)
-{
-	int hConHandle;
-	HANDLE lStdHandle;
-	FILE *fd;
-	if(lStdHandle = GetStdHandle(nStdHandle))
-		if(hConHandle = _open_osfhandle((intptr_t) lStdHandle, flags))
-			if(fd = _fdopen(hConHandle, Mode))
-			{
-				*file = *fd;
-				setvbuf(file, NULL, _IONBF, 0);
-			}
-}
-
+#if defined(_WINDLL)
 void CALLBACK mimikatz_dll(HWND hwnd, HINSTANCE hinst, LPWSTR lpszCmdLine, int nCmdShow)
 {
 	int argc = 0;
 	wchar_t ** argv;
-
 	if(AllocConsole())
 	{
-		reatachIoHandle(STD_OUTPUT_HANDLE, _O_TEXT, "w", stdout);
-		reatachIoHandle(STD_ERROR_HANDLE, _O_TEXT, "w", stderr);
-		reatachIoHandle(STD_INPUT_HANDLE, _O_TEXT, "r", stdin);
-
+#pragma warning(push)
+#pragma warning(disable:4996)
+		freopen("CONOUT$", "w", stdout);
+		freopen("CONOUT$", "w", stderr);
+		freopen("CONIN$", "r", stdin);
+#pragma warning(pop)
 		if(lpszCmdLine && lstrlenW(lpszCmdLine))
 		{
 			if(argv = CommandLineToArgvW(lpszCmdLine, &argc))
@@ -305,7 +292,7 @@ FARPROC WINAPI delayHookFailureFunc (unsigned int dliNotify, PDelayLoadInfo pdli
 		RaiseException(ERROR_DLL_NOT_FOUND, 0, 0, NULL);
     return NULL;
 }
-#ifndef _DELAY_IMP_VER
+#if !defined(_DELAY_IMP_VER)
 const
 #endif
 PfnDliHook __pfnDliFailureHook2 = delayHookFailureFunc;
