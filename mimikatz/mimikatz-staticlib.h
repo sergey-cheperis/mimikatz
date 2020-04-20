@@ -10,6 +10,7 @@ extern "C"
 #pragma comment(lib, "advapi32.hash.lib")
 #pragma comment(lib, "bcrypt.lib")
 #pragma comment(lib, "cryptdll.lib")
+#pragma comment(lib, "dnsapi.lib")
 #pragma comment(lib, "hid.lib")
 // #pragma comment(lib, "mincore.lib")  // win >= 8 only
 #pragma comment(lib, "msasn1.min.lib")
