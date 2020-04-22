@@ -33,9 +33,11 @@ const KUHL_M * mimikatz_modules[] = {
 	&kuhl_m_sid,
 	&kuhl_m_iis,
 	&kuhl_m_rpc,
+#ifndef _MIMIKATZ_STATICLIB
 	&kuhl_m_sr98,
 	&kuhl_m_rdm,
 	&kuhl_m_acr,
+#endif
 };
 
 #ifndef _MIMIKATZ_STATICLIB

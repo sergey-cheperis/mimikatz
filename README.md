@@ -8,7 +8,7 @@ This project is configured for Visual Studio 2017 and may not build with other v
 
 Supported target systems: Windows Vista/7/8/10, Windows Server 2008/2012/2016, 32-bit and 64-bit.
 
-Unlike original `mimikatz`, it does not include `mimilib` and `mimidrv`. Also, `minesweeper` and `busylights` modules are disabled.
+Unlike original `mimikatz`, it does not include `mimilib` and `mimidrv`. Also, `minesweeper`, `busylights` and some other rarely used modules are disabled.
 
 Important: set *"Linker/General/Use Library Dependency Input"* to *"Yes"*, otherwise globals like `mimikatz_modules` may remain uninitialized and the program will crash.  Source: https://ofekshilon.com/2013/04/06/forcing-construction-of-global-objects-in-static-libraries/
 
