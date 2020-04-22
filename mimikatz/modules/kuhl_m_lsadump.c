@@ -2228,7 +2228,7 @@ NTSTATUS kuhl_m_lsadump_enumdomains_users(int argc, wchar_t * argv[], DWORD dwUs
 	LSA_UNICODE_STRING serverName, userName;
 	PCWCHAR szServer, szUser;
 	BOOL isUser = FALSE, isRid = FALSE;
-	DWORD i, domainEnumerationContext = 0, domainCountRetourned, rid = 0, *pRid, *pUse;
+	DWORD i, domainEnumerationContext = 0, domainCountRetourned, rid = 0, *pRid = NULL, *pUse = NULL;
 	PSAMPR_RID_ENUMERATION pEnumDomainBuffer;
 	PSID domainSid;
 	SAMPR_HANDLE hServerHandle, hDomainHandle, hUserHandle;
