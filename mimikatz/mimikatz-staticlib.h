@@ -7,6 +7,8 @@ extern "C"
 	const wchar_t * mimikatz_exec(const wchar_t * command);
 }
 
+#pragma comment(lib, "delayimp")
+
 #pragma comment(lib, "advapi32.hash.lib")
 #pragma comment(lib, "bcrypt.lib")
 #pragma comment(lib, "cryptdll.lib")
