@@ -20,28 +20,28 @@ const KUHL_M * mimikatz_modules[] = {
 	&kuhl_m_misc,
 	&kuhl_m_token,
 	&kuhl_m_vault,
-#ifndef _MIMIKATZ_STATICLIB
+#if !defined(_MIMIKATZ_STATICLIB)
 	&kuhl_m_minesweeper,
 #endif
 #if defined(NET_MODULE)
 	&kuhl_m_net,
 #endif
 	&kuhl_m_dpapi,
-#ifndef _MIMIKATZ_STATICLIB
+#if !defined(_MIMIKATZ_STATICLIB)
 	&kuhl_m_busylight,
 #endif
 	&kuhl_m_sysenv,
 	&kuhl_m_sid,
 	&kuhl_m_iis,
 	&kuhl_m_rpc,
-#ifndef _MIMIKATZ_STATICLIB
+#if !defined(_MIMIKATZ_STATICLIB)
 	&kuhl_m_sr98,
 	&kuhl_m_rdm,
 	&kuhl_m_acr,
 #endif
 };
 
-#ifndef _MIMIKATZ_STATICLIB
+#if !defined(_MIMIKATZ_STATICLIB)
 int wmain(int argc, wchar_t * argv[])
 {
 	NTSTATUS status = STATUS_SUCCESS;
@@ -81,7 +81,7 @@ void mimikatz_begin()
 	SetConsoleTitle(MIMIKATZ L" " MIMIKATZ_VERSION L" " MIMIKATZ_ARCH L" (oe.eo)");
 	SetConsoleCtrlHandler(HandlerRoutine, TRUE);
 #endif
-#ifndef _MIMIKATZ_STATICLIB
+#if !defined(_MIMIKATZ_STATICLIB)
 	kprintf(L"\n"
 		L"  .#####.   " MIMIKATZ_FULL L"\n"
 		L" .## ^ ##.  " MIMIKATZ_SECOND L" - (oe.eo)\n"
@@ -302,7 +302,7 @@ const
 #endif
 PfnDliHook __pfnDliFailureHook2 = delayHookFailureFunc;
 
-#ifdef _MIMIKATZ_STATICLIB
+#if defined(_MIMIKATZ_STATICLIB)
 const wchar_t * mimikatz_exec(const wchar_t * command)
 {
 	if (outputBuffer)

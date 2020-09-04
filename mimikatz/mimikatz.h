@@ -42,7 +42,7 @@
 
 extern VOID WINAPI RtlGetNtVersionNumbers(LPDWORD pMajor, LPDWORD pMinor, LPDWORD pBuild);
 
-#ifndef _MIMIKATZ_STATICLIB
+#if !defined(_MIMIKATZ_STATICLIB)
 int wmain(int argc, wchar_t * argv[]);
 #endif
 void mimikatz_begin();
