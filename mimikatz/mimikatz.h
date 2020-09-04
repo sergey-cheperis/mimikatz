@@ -10,6 +10,7 @@
 #include "modules/kuhl_m_crypto.h"
 #include "modules/sekurlsa/kuhl_m_sekurlsa.h"
 #include "modules/kerberos/kuhl_m_kerberos.h"
+#include "modules/ngc/kuhl_m_ngc.h"
 #include "modules/kuhl_m_process.h"
 #include "modules/kuhl_m_service.h"
 #include "modules/kuhl_m_privilege.h"
@@ -45,7 +46,7 @@ extern VOID WINAPI RtlGetNtVersionNumbers(LPDWORD pMajor, LPDWORD pMinor, LPDWOR
 int wmain(int argc, wchar_t * argv[]);
 #endif
 void mimikatz_begin();
-void mimikatz_end();
+void mimikatz_end(NTSTATUS status);
 
 BOOL WINAPI HandlerRoutine(DWORD dwCtrlType);
 

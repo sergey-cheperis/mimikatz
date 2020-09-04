@@ -3,7 +3,7 @@
 extern "C"
 {
 	void mimikatz_begin();
-	void mimikatz_end();
+	void mimikatz_end(NTSTATUS status = 0);
 	const wchar_t * mimikatz_exec(const wchar_t * command);
 }
 

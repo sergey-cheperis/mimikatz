@@ -14,6 +14,7 @@ const KUHL_M_C kuhl_m_c_dpapi[] = {
 	
 	{kuhl_m_dpapi_keys_capi,	L"capi",		L"CAPI key test"},
 	{kuhl_m_dpapi_keys_cng,		L"cng",			L"CNG key test"},
+	{kuhl_m_dpapi_keys_tpm,		L"tpm",			L"TPM key test"},
 	{kuhl_m_dpapi_cred,			L"cred",		L"CRED test"},
 	{kuhl_m_dpapi_vault,		L"vault",		L"VAULT test"},
 	{kuhl_m_dpapi_wifi,			L"wifi",		L"WiFi test"},
@@ -23,6 +24,8 @@ const KUHL_M_C kuhl_m_c_dpapi[] = {
 	{kuhl_m_dpapi_rdg,			L"rdg",			L"RDG saved passwords"},
 	{kuhl_m_dpapi_powershell,	L"ps",			L"PowerShell credentials (PSCredentials or SecureString)"},
 	{kuhl_m_dpapi_lunahsm,		L"luna",		L"Safenet LunaHSM KSP"},
+	{kuhl_m_dpapi_cloudap_keyvalue_derived,	L"cloudapkd",	L""},
+	{kuhl_m_dpapi_cloudap_fromreg, L"cloudapreg",	L""},
 	{kuhl_m_dpapi_oe_cache,		L"cache", NULL},
 };
 const KUHL_M kuhl_m_dpapi = {
