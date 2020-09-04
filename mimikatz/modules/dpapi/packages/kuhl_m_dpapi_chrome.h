@@ -5,7 +5,7 @@
 */
 #pragma once
 #include "../kuhl_m_dpapi.h"
-#include "../modules/sqlite3.h"
+#include "../inc/sqlite3.h"
 
 NTSTATUS kuhl_m_dpapi_chrome(int argc, wchar_t * argv[]);
 BOOL kuhl_m_dpapi_chrome_isTableExist(sqlite3 *pDb, const char *table);
