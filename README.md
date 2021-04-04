@@ -32,7 +32,9 @@ This project is research only, please do not use for illegal purposes.
 
 ## Credits
 
-Mimikatz (c) Benjamin DELPY `gentilkiwi` (benjamin@gentilkiwi.com) / Vincent LE TOUX (vincent.letoux@gmail.com)
+Mimikatz © Benjamin DELPY `gentilkiwi` (benjamin@gentilkiwi.com) / Vincent LE TOUX (vincent.letoux@gmail.com)
 http://blog.gentilkiwi.com/mimikatz
 
 CC BY 4.0 licence - https://creativecommons.org/licenses/by/4.0/
+
+If you use this product, please consider donating to the author of original Mimikatz, Benjamin Delpy (https://www.paypal.me/delpy/).
