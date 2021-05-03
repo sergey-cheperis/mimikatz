@@ -118,11 +118,4 @@ void kull_m_output_clean()
 #endif
 	SetConsoleOutputCP(previousConsoleOutput);
 #endif
-#if defined(_MIMIKATZ_STATICLIB)
-	if (outputBuffer)
-	{
-		LocalFree(outputBuffer);
-		outputBuffer = NULL;
-	}
-#endif
 }
