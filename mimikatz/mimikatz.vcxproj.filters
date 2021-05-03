@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="mimikatz.c" />
     <ClCompile Include="modules\kuhl_m_standard.c">
       <Filter>local modules</Filter>
     </ClCompile>
@@ -308,6 +307,8 @@
     <ClCompile Include="..\modules\kull_m_crypto_ngc.c">
       <Filter>common modules</Filter>
     </ClCompile>
+    <ClCompile Include="mimikatz-staticlib.c" />
+    <ClCompile Include="mimikatz.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mimikatz.h" />

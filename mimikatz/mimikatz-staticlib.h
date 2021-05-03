@@ -1,11 +1,26 @@
 #pragma once
 
+typedef NTSTATUS mimikatz_entry_point(int argc, const wchar_t* argv[]);
+
+#ifdef __cplusplus
 extern "C"
 {
-	void mimikatz_begin();
-	void mimikatz_end(NTSTATUS status = 0);
-	const wchar_t * mimikatz_exec(const wchar_t * command);
+#endif
+
+void mimikatz_begin();
+void mimikatz_end(
+#ifdef __cplusplus
+	NTSTATUS status = 0
+#else
+	NTSTATUS status
+#endif
+);
+const wchar_t* mimikatz_call_direct(mimikatz_entry_point* func, int argc, const wchar_t* argv[]);
+
+#ifdef __cplusplus
 }
+#endif
+
 
 #pragma comment(lib, "delayimp")
 

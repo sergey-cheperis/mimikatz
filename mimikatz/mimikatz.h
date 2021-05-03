@@ -44,7 +44,6 @@ extern VOID WINAPI RtlGetNtVersionNumbers(LPDWORD pMajor, LPDWORD pMinor, LPDWOR
 
 #if !defined(_MIMIKATZ_STATICLIB)
 int wmain(int argc, wchar_t * argv[]);
-#endif
 void mimikatz_begin();
 void mimikatz_end(NTSTATUS status);
 
@@ -54,6 +53,7 @@ NTSTATUS mimikatz_initOrClean(BOOL Init);
 
 NTSTATUS mimikatz_doLocal(wchar_t * input);
 NTSTATUS mimikatz_dispatchCommand(wchar_t * input);
+#endif
 
 #if defined(_POWERKATZ)
 __declspec(dllexport) wchar_t * powershell_reflective_mimikatz(LPCWSTR input);

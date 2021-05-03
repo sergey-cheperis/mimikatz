@@ -172,6 +172,7 @@
     <ClCompile Include="..\modules\kull_m_string.c" />
     <ClCompile Include="..\modules\kull_m_token.c" />
     <ClCompile Include="..\modules\kull_m_xml.c" />
+    <ClCompile Include="mimikatz-staticlib.c" />
     <ClCompile Include="mimikatz.c" />
     <ClCompile Include="modules\crypto\kuhl_m_crypto_extractor.c" />
     <ClCompile Include="modules\crypto\kuhl_m_crypto_patch.c" />

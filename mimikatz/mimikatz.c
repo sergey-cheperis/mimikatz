@@ -3,6 +3,8 @@
 	benjamin@gentilkiwi.com
 	Licence : https://creativecommons.org/licenses/by/4.0/
 */
+#if !defined(_MIMIKATZ_STATICLIB)
+
 #include "mimikatz.h"
 
 const KUHL_M * mimikatz_modules[] = {
@@ -20,28 +22,21 @@ const KUHL_M * mimikatz_modules[] = {
 	&kuhl_m_misc,
 	&kuhl_m_token,
 	&kuhl_m_vault,
-#if !defined(_MIMIKATZ_STATICLIB)
 	&kuhl_m_minesweeper,
-#endif
 #if defined(NET_MODULE)
 	&kuhl_m_net,
 #endif
 	&kuhl_m_dpapi,
-#if !defined(_MIMIKATZ_STATICLIB)
 	&kuhl_m_busylight,
-#endif
 	&kuhl_m_sysenv,
 	&kuhl_m_sid,
 	&kuhl_m_iis,
 	&kuhl_m_rpc,
-#if !defined(_MIMIKATZ_STATICLIB)
 	&kuhl_m_sr98,
 	&kuhl_m_rdm,
 	&kuhl_m_acr,
-#endif
 };
 
-#if !defined(_MIMIKATZ_STATICLIB)
 int wmain(int argc, wchar_t * argv[])
 {
 	NTSTATUS status = STATUS_SUCCESS;
@@ -72,16 +67,14 @@ int wmain(int argc, wchar_t * argv[])
 	mimikatz_end(status);
 	return STATUS_SUCCESS;
 }
-#endif
 
 void mimikatz_begin()
 {
 	kull_m_output_init();
-#if !defined(_POWERKATZ) && !defined(_MIMIKATZ_STATICLIB)
+#if !defined(_POWERKATZ)
 	SetConsoleTitle(MIMIKATZ L" " MIMIKATZ_VERSION L" " MIMIKATZ_ARCH L" (oe.eo)");
 	SetConsoleCtrlHandler(HandlerRoutine, TRUE);
 #endif
-#if !defined(_MIMIKATZ_STATICLIB)
 	kprintf(L"\n"
 		L"  .#####.   " MIMIKATZ_FULL L"\n"
 		L" .## ^ ##.  " MIMIKATZ_SECOND L" - (oe.eo)\n"
@@ -89,18 +82,17 @@ void mimikatz_begin()
 		L" ## \\ / ##       > http://blog.gentilkiwi.com/mimikatz\n"
 		L" '## v ##'       Vincent LE TOUX             ( vincent.letoux@gmail.com )\n"
 		L"  '#####'        > http://pingcastle.com / http://mysmartlogon.com   ***/\n");
-#endif
 	mimikatz_initOrClean(TRUE);
 }
 
 void mimikatz_end(NTSTATUS status)
 {
 	mimikatz_initOrClean(FALSE);
-#if !defined(_POWERKATZ) && !defined(_MIMIKATZ_STATICLIB)
+#if !defined(_POWERKATZ)
 	SetConsoleCtrlHandler(HandlerRoutine, FALSE);
 #endif
 	kull_m_output_clean();
-#if !defined(_WINDLL) && !defined(_MIMIKATZ_STATICLIB)
+#if !defined(_WINDLL)
 	if(status == STATUS_THREAD_IS_TERMINATING)
 		ExitThread(STATUS_SUCCESS);
 	else ExitProcess(STATUS_SUCCESS);
@@ -302,20 +294,4 @@ const
 #endif
 PfnDliHook __pfnDliFailureHook2 = delayHookFailureFunc;
 
-#if defined(_MIMIKATZ_STATICLIB)
-const wchar_t * mimikatz_exec(const wchar_t * command)
-{
-	if (outputBuffer)
-		memset(outputBuffer, 0, outputBufferElements * sizeof(wchar_t));
-	else
-	{
-		outputBufferElements = 0xffff;
-		outputBuffer = (wchar_t *)LocalAlloc(LPTR, outputBufferElements * sizeof(wchar_t));
-		if (!outputBuffer)
-			return NULL;
-	}
-	outputBufferElementsPosition = 0;
-	mimikatz_dispatchCommand((wchar_t *)command);
-	return outputBuffer;
-}
 #endif
