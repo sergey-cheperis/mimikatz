@@ -104,7 +104,7 @@ BOOL kull_m_crypto_close_hprov_delete_container(HCRYPTPROV hProv)
 {
 	BOOL status = FALSE;
 	DWORD provtype;
-	PSTR container, provider;
+	PSTR container = NULL, provider = NULL;
 	if(kull_m_crypto_CryptGetProvParam(hProv, PP_CONTAINER, FALSE, (PBYTE *) &container, NULL, NULL))
 	{
 		if(kull_m_crypto_CryptGetProvParam(hProv, PP_NAME, FALSE, (PBYTE *) &provider, NULL, NULL))
