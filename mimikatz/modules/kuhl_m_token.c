@@ -5,6 +5,7 @@
 */
 #include "kuhl_m_token.h"
 
+/*
 const KUHL_M_C kuhl_m_c_token[] = {
 	{kuhl_m_token_whoami,	L"whoami",	L"Display current identity"},
 	{kuhl_m_token_list,		L"list",	L"List all tokens of the system"},
@@ -17,6 +18,7 @@ const KUHL_M kuhl_m_token = {
 	L"token",	L"Token manipulation module", NULL,
 	ARRAYSIZE(kuhl_m_c_token), kuhl_m_c_token, NULL, NULL
 };
+*/
 
 NTSTATUS kuhl_m_token_whoami(int argc, wchar_t * argv[])
 {

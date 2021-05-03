@@ -7,6 +7,7 @@
 
 HMODULE kuhl_m_crypto_hRsaEnh = NULL, kuhl_m_crypto_hDssEnh = NULL;
 
+/*
 const KUHL_M_C kuhl_m_c_crypto[] = {
 	{kuhl_m_crypto_l_providers,		L"providers",		L"List cryptographic providers"},
 	{kuhl_m_crypto_l_stores,		L"stores",			L"List cryptographic stores"},
@@ -30,6 +31,7 @@ const KUHL_M kuhl_m_crypto = {
 	L"crypto", L"Crypto Module", NULL,
 	ARRAYSIZE(kuhl_m_c_crypto), kuhl_m_c_crypto, kuhl_m_crypto_init, kuhl_m_crypto_clean
 };
+*/
 
 NTSTATUS kuhl_m_crypto_init()
 {

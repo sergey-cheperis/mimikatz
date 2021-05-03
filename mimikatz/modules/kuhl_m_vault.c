@@ -19,6 +19,7 @@ PVAULTGETITEM8 VaultGetItem8 = NULL;
 BOOL isVaultInit = FALSE;
 DWORD sizeOfStruct;
 
+/*
 const KUHL_M_C kuhl_m_c_vault[] = {
 	{kuhl_m_vault_list,	L"list",	L"list"},
 	{kuhl_m_vault_cred,	L"cred",	L"cred"},
@@ -27,6 +28,7 @@ const KUHL_M kuhl_m_vault = {
 	L"vault",	L"Windows Vault/Credential module", NULL,
 	ARRAYSIZE(kuhl_m_c_vault), kuhl_m_c_vault, kuhl_m_vault_init, kuhl_m_vault_clean
 };
+*/
 
 NTSTATUS kuhl_m_vault_init()
 {

@@ -5,6 +5,7 @@
 */
 #include "kuhl_m_sekurlsa.h"
 
+/*
 const KUHL_M_C kuhl_m_c_sekurlsa[] = {
 	{kuhl_m_sekurlsa_msv,				L"msv",				L"Lists LM & NTLM credentials"},
 	{kuhl_m_sekurlsa_wdigest,			L"wdigest",			L"Lists WDigest credentials"},
@@ -39,6 +40,7 @@ const KUHL_M kuhl_m_sekurlsa = {
 	L"sekurlsa",	L"SekurLSA module",	L"Some commands to enumerate credentials...",
 	ARRAYSIZE(kuhl_m_c_sekurlsa), kuhl_m_c_sekurlsa, kuhl_m_sekurlsa_init, kuhl_m_sekurlsa_clean
 };
+*/
 
 KUHL_M_SEKURLSA_PACKAGE kuhl_m_sekurlsa_kdcsvc_package = {L"kdc", NULL, FALSE, L"kdcsvc.dll", {{{NULL, NULL}, 0, 0, NULL}, FALSE, FALSE}};
 const PKUHL_M_SEKURLSA_PACKAGE lsassPackages[] = {

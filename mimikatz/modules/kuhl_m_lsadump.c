@@ -5,6 +5,7 @@
 */
 #include "kuhl_m_lsadump.h"
 
+/*
 const KUHL_M_C kuhl_m_c_lsadump[] = {
 	{kuhl_m_lsadump_sam,		L"sam",			L"Get the SysKey to decrypt SAM entries (from registry or hives)"},
 	{kuhl_m_lsadump_secrets,	L"secrets",		L"Get the SysKey to decrypt SECRETS entries (from registry or hives)"},
@@ -26,6 +27,7 @@ const KUHL_M kuhl_m_lsadump = {
 	L"lsadump", L"LsaDump module", NULL,
 	ARRAYSIZE(kuhl_m_c_lsadump), kuhl_m_c_lsadump, NULL, NULL
 };
+*/
 
 NTSTATUS kuhl_m_lsadump_sam(int argc, wchar_t * argv[])
 {
