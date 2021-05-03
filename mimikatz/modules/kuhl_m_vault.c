@@ -443,6 +443,8 @@ KULL_M_PATCH_GENERIC CredpCloneCredentialReferences[] = {
 };
 #endif
 
+void kuhl_m_vault_cred_custom_callback();
+
 NTSTATUS kuhl_m_vault_cred(int argc, wchar_t * argv[])
 {
 	DWORD credCount, i, j;
@@ -485,7 +487,13 @@ NTSTATUS kuhl_m_vault_cred(int argc, wchar_t * argv[])
 		}
 	}
 	else
-	{
+	{	
+		if (kull_m_string_args_byName(argc, argv, L"custom", NULL, NULL))
+		{
+			kuhl_m_vault_cred_custom_callback();
+			return STATUS_SUCCESS;
+		}
+
 		do
 		{
 			if(CredEnumerate(NULL, flags, &credCount, &pCredential))
