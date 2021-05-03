@@ -29,15 +29,15 @@
 	#define MIMIKATZ_ARCH L"x86"
 #endif
 
-#define MIMIKATZ				L"mimikatz"
-#define MIMIKATZ_A				"mimikatz"
+#define MIMIKATZ				L"utohlans"
+#define MIMIKATZ_A				"utohlans"
 #define MIMIKATZ_VERSION		L"2.2.0"
 #define MIMIKATZ_CODENAME		L"A La Vie, A L\'Amour"
 #define MIMIKATZ_MAX_WINBUILD	L"19041"
 #define MIMIKATZ_FULL			MIMIKATZ L" " MIMIKATZ_VERSION L" (" MIMIKATZ_ARCH L") #" MIMIKATZ_MAX_WINBUILD L" " TEXT(__DATE__) L" " TEXT(__TIME__)
 #define MIMIKATZ_SECOND			L"\"" MIMIKATZ_CODENAME L"\""
 #define MIMIKATZ_DEFAULT_LOG	MIMIKATZ L".log"
-#define MIMIKATZ_DRIVER			L"mimidrv"
+#define MIMIKATZ_DRIVER			L"sisidrv"
 #define MIMIKATZ_KERBEROS_EXT	L"kirbi"
 #define MIMIKATZ_SERVICE		MIMIKATZ L"svc"
 
