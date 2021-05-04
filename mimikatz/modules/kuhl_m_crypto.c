@@ -1,5 +1,5 @@
 /*	Benjamin DELPY `gentilkiwi`
-	http://blog.gentilkiwi.com
+	https://blog.gentilkiwi.com
 	benjamin@gentilkiwi.com
 	Licence : https://creativecommons.org/licenses/by/4.0/
 */
@@ -312,7 +312,7 @@ void kuhl_m_crypto_l_keys_capi(LPCWSTR szContainer, LPCWSTR szProvider, DWORD dw
 	HCRYPTKEY hCapiKey;
 	DWORD i, dwSizeNeeded, ks, CRYPT_first_next = CRYPT_FIRST, dwContainer = szContainer ? (DWORD) wcslen(szContainer) : 0, dwSubContainer;
 	BOOL success;
-	char *aContainerName, *aUniqueName = NULL;
+	char *aContainerName, *aUniqueName;
 	wchar_t *containerName, *fullContainer;
 
 	if(CryptAcquireContext(&hCryptProv, szContainer, szProvider, dwProvType, CRYPT_VERIFYCONTEXT | dwFlags))
@@ -458,7 +458,7 @@ NTSTATUS kuhl_m_crypto_l_keys(int argc, wchar_t * argv[])
 void kuhl_m_crypto_printKeyInfos(NCRYPT_KEY_HANDLE hCNGKey, HCRYPTKEY hCAPIKey, OPTIONAL HCRYPTPROV hCAPIProv)
 {
 	DWORD myDWORD, dwSizeNeeded;
-	PWSTR myStr = NULL;
+	PWSTR myStr;
 	NCRYPT_PROV_HANDLE hCNGProv;
 	if(hCNGKey)
 	{
@@ -612,8 +612,8 @@ void kuhl_m_crypto_exportKeyToFile(NCRYPT_KEY_HANDLE hCngKey, HCRYPTKEY hCapiKey
 	PBYTE pExport = NULL;
 	SECURITY_STATUS nCryptReturn;
 	PVK_FILE_HDR pvkHeader = {PVK_MAGIC, PVK_FILE_VERSION_0, keySpec, PVK_NO_ENCRYPT, 0, 0};
-	PCWCHAR provType = hCngKey ? L"cng" : L"capi", pExt = NULL;
-	PWCHAR filenamebuffer, cngAlg = NULL;
+	PCWCHAR provType = hCngKey ? L"cng" : L"capi", pExt;
+	PWCHAR filenamebuffer, cngAlg;
 	const KUHL_M_CRYPTO_NCRYPT_GROUP_TO_EXPORT *pCngElem = NULL;
 	LPSTR b64Out;
 
@@ -790,7 +790,7 @@ NTSTATUS kuhl_m_crypto_hash(int argc, wchar_t * argv[])
 
 	RtlInitUnicodeString(&uPassword, szPassword);
 	RtlInitUnicodeString(&uUsername, szUsername);
-	if(NT_SUCCESS(RtlDigestNTLM(&uPassword, hash)))
+	if(NT_SUCCESS(RtlCalculateNtOwfPassword(&uPassword, hash)))
 	{
 		kprintf(L"NTLM: "); kull_m_string_wprintf_hex(hash, LM_NTLM_HASH_LENGTH, 0); kprintf(L"\n");
 		if(szUsername)
@@ -821,7 +821,7 @@ NTSTATUS kuhl_m_crypto_hash(int argc, wchar_t * argv[])
 
 	if(NT_SUCCESS(RtlUpcaseUnicodeStringToOemString(&oTmp, &uPassword, TRUE)))
 	{
-		if(NT_SUCCESS(RtlDigestLM(oTmp.Buffer, hash)))
+		if(NT_SUCCESS(RtlCalculateLmOwfPassword(oTmp.Buffer, hash)))
 		{
 			kprintf(L"LM  : "); kull_m_string_wprintf_hex(hash, LM_NTLM_HASH_LENGTH, 0); kprintf(L"\n");
 		}
@@ -995,8 +995,8 @@ NTSTATUS kuhl_m_crypto_c_cert_to_hw(int argc, wchar_t * argv[])
 	HCRYPTKEY hCapiKey;
 	NCRYPT_PROV_HANDLE hCngProv;
 	NCRYPT_KEY_HANDLE hCngKey;
-	PBYTE keyblob = NULL;
-	DWORD dwkeyblob = 0;
+	PBYTE keyblob;
+	DWORD dwkeyblob;
 	SECURITY_STATUS nCryptReturn;
 
 	LPSTR aPin = NULL;

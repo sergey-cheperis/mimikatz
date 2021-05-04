@@ -1,5 +1,5 @@
 /*	Benjamin DELPY `gentilkiwi`
-	http://blog.gentilkiwi.com
+	https://blog.gentilkiwi.com
 	benjamin@gentilkiwi.com
 	Licence : https://creativecommons.org/licenses/by/4.0/
 */
@@ -79,7 +79,7 @@ wchar_t * pMinidumpName = NULL;
 
 VOID kuhl_m_sekurlsa_reset()
 {
-	HANDLE toClose = NULL;
+	HANDLE toClose;
 	ULONG i;
 	
 	if(pMinidumpName)
@@ -102,8 +102,7 @@ VOID kuhl_m_sekurlsa_reset()
 			;
 		}
 		cLsass.hLsassMem = kull_m_memory_close(cLsass.hLsassMem);
-		if (toClose)
-			CloseHandle(toClose);
+		CloseHandle(toClose);
 		kuhl_m_sekurlsa_clean();
 	}
 	for(i = 0; i < ARRAYSIZE(lsassPackages); i++)
@@ -886,7 +885,7 @@ NTSTATUS kuhl_m_sekurlsa_pth(int argc, wchar_t * argv[])
 	BYTE ntlm[LM_NTLM_HASH_LENGTH], aes128key[AES_128_KEY_LENGTH], aes256key[AES_256_KEY_LENGTH];
 	TOKEN_STATISTICS tokenStats;
 	SEKURLSA_PTH_DATA data = {&tokenStats.AuthenticationId, NULL, NULL, NULL, FALSE};
-	PCWCHAR szUser = NULL, szDomain = NULL, szRun = NULL, szNTLM, szAes128, szAes256, szLuid = NULL;
+	PCWCHAR szUser, szDomain, szRun, szNTLM, szAes128, szAes256, szLuid = NULL;
 	DWORD dwNeededSize;
 	HANDLE hToken, hNewToken;
 	PROCESS_INFORMATION processInfos;
@@ -1070,7 +1069,7 @@ VOID kuhl_m_sekurlsa_genericCredsOutput(PKIWI_GENERIC_PRIMARY_CREDENTIAL mesCred
 	const MSV1_0_PRIMARY_HELPER * pMSVHelper;
 #if defined(_M_X64) || defined(_M_ARM64)
 	DWORD cbLsaIsoOutput;
-	PBYTE lsaIsoOutput = NULL;
+	PBYTE lsaIsoOutput;
 	PLSAISO_DATA_BLOB blob = NULL;
 #endif
 	SHA_CTX shaCtx;
