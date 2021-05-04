@@ -1069,7 +1069,7 @@ VOID kuhl_m_sekurlsa_genericCredsOutput(PKIWI_GENERIC_PRIMARY_CREDENTIAL mesCred
 	const MSV1_0_PRIMARY_HELPER * pMSVHelper;
 #if defined(_M_X64) || defined(_M_ARM64)
 	DWORD cbLsaIsoOutput;
-	PBYTE lsaIsoOutput;
+	PBYTE lsaIsoOutput = NULL;
 	PLSAISO_DATA_BLOB blob = NULL;
 #endif
 	SHA_CTX shaCtx;
