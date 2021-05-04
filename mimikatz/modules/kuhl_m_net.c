@@ -5,6 +5,7 @@
 */
 #include "kuhl_m_net.h"
 
+/*
 const KUHL_M_C kuhl_m_c_net[] = {
 	{kuhl_m_net_user,		L"user",		L""},
 	{kuhl_m_net_group,		L"group",		L""},
@@ -24,6 +25,7 @@ const KUHL_M kuhl_m_net = {
 	L"net",	L"", NULL,
 	ARRAYSIZE(kuhl_m_c_net), kuhl_m_c_net, NULL, NULL
 };
+*/
 
 NTSTATUS kuhl_m_net_user(int argc, wchar_t * argv[])
 {
