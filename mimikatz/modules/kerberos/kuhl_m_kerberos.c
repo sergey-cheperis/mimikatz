@@ -1,5 +1,5 @@
 /*	Benjamin DELPY `gentilkiwi`
-	http://blog.gentilkiwi.com
+	https://blog.gentilkiwi.com
 	benjamin@gentilkiwi.com
 	Licence : https://creativecommons.org/licenses/by/4.0/
 */
@@ -568,7 +568,7 @@ NTSTATUS kuhl_m_kerberos_encrypt(ULONG eType, ULONG keyUsage, LPCVOID key, DWORD
 			{
 				if(modulo = *outputSize % pCSystem->BlockSize)
 					*outputSize += pCSystem->BlockSize - modulo;
-				*outputSize += pCSystem->Size;
+				*outputSize += pCSystem->HeaderSize;
 			}
 			if(*output = LocalAlloc(LPTR, *outputSize))
 			{
