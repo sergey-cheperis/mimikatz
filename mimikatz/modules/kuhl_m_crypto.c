@@ -460,7 +460,7 @@ NTSTATUS kuhl_m_crypto_l_keys(int argc, wchar_t * argv[])
 void kuhl_m_crypto_printKeyInfos(NCRYPT_KEY_HANDLE hCNGKey, HCRYPTKEY hCAPIKey, OPTIONAL HCRYPTPROV hCAPIProv)
 {
 	DWORD myDWORD, dwSizeNeeded;
-	PWSTR myStr;
+	PWSTR myStr = NULL;
 	NCRYPT_PROV_HANDLE hCNGProv;
 	if(hCNGKey)
 	{
@@ -615,7 +615,7 @@ void kuhl_m_crypto_exportKeyToFile(NCRYPT_KEY_HANDLE hCngKey, HCRYPTKEY hCapiKey
 	SECURITY_STATUS nCryptReturn;
 	PVK_FILE_HDR pvkHeader = {PVK_MAGIC, PVK_FILE_VERSION_0, keySpec, PVK_NO_ENCRYPT, 0, 0};
 	PCWCHAR provType = hCngKey ? L"cng" : L"capi", pExt = NULL;
-	PWCHAR filenamebuffer, cngAlg;
+	PWCHAR filenamebuffer, cngAlg = NULL;
 	const KUHL_M_CRYPTO_NCRYPT_GROUP_TO_EXPORT *pCngElem = NULL;
 	LPSTR b64Out;
 
