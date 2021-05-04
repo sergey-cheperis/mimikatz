@@ -1,6 +1,7 @@
 #pragma once
 
 typedef NTSTATUS mimikatz_entry_point(int argc, const wchar_t* argv[]);
+typedef NTSTATUS mimikatz_init_or_clean();
 
 #ifdef __cplusplus
 extern "C"
