@@ -79,7 +79,7 @@ wchar_t * pMinidumpName = NULL;
 
 VOID kuhl_m_sekurlsa_reset()
 {
-	HANDLE toClose;
+	HANDLE toClose = NULL;
 	ULONG i;
 	
 	if(pMinidumpName)
@@ -885,7 +885,7 @@ NTSTATUS kuhl_m_sekurlsa_pth(int argc, wchar_t * argv[])
 	BYTE ntlm[LM_NTLM_HASH_LENGTH], aes128key[AES_128_KEY_LENGTH], aes256key[AES_256_KEY_LENGTH];
 	TOKEN_STATISTICS tokenStats;
 	SEKURLSA_PTH_DATA data = {&tokenStats.AuthenticationId, NULL, NULL, NULL, FALSE};
-	PCWCHAR szUser, szDomain, szRun, szNTLM, szAes128, szAes256, szLuid = NULL;
+	PCWCHAR szUser = NULL, szDomain = NULL, szRun = NULL, szNTLM, szAes128, szAes256, szLuid = NULL;
 	DWORD dwNeededSize;
 	HANDLE hToken, hNewToken;
 	PROCESS_INFORMATION processInfos;

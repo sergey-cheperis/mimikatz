@@ -1859,7 +1859,7 @@ NTSTATUS kuhl_m_lsadump_LsaRetrievePrivateData(PCWSTR systemName, PCWSTR secretN
 
 void kuhl_m_lsadump_analyzeKey(LPCGUID guid, PKIWI_BACKUP_KEY secret, DWORD size, BOOL isExport)
 {
-	PVOID data;
+	PVOID data = NULL;
 	DWORD len;
 	UNICODE_STRING uString;
 	PWCHAR filename = NULL, shortname;

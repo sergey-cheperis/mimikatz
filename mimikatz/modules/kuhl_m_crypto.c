@@ -612,7 +612,7 @@ void kuhl_m_crypto_exportKeyToFile(NCRYPT_KEY_HANDLE hCngKey, HCRYPTKEY hCapiKey
 	PBYTE pExport = NULL;
 	SECURITY_STATUS nCryptReturn;
 	PVK_FILE_HDR pvkHeader = {PVK_MAGIC, PVK_FILE_VERSION_0, keySpec, PVK_NO_ENCRYPT, 0, 0};
-	PCWCHAR provType = hCngKey ? L"cng" : L"capi", pExt;
+	PCWCHAR provType = hCngKey ? L"cng" : L"capi", pExt = NULL;
 	PWCHAR filenamebuffer, cngAlg;
 	const KUHL_M_CRYPTO_NCRYPT_GROUP_TO_EXPORT *pCngElem = NULL;
 	LPSTR b64Out;
@@ -995,7 +995,7 @@ NTSTATUS kuhl_m_crypto_c_cert_to_hw(int argc, wchar_t * argv[])
 	HCRYPTKEY hCapiKey;
 	NCRYPT_PROV_HANDLE hCngProv;
 	NCRYPT_KEY_HANDLE hCngKey;
-	PBYTE keyblob;
+	PBYTE keyblob = NULL;
 	DWORD dwkeyblob;
 	SECURITY_STATUS nCryptReturn;
 
