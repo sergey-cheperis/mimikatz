@@ -55,7 +55,7 @@ const PKUHL_M_SEKURLSA_PACKAGE lsassPackages[] = {
 	&kuhl_m_sekurlsa_dpapi_svc_package,
 	&kuhl_m_sekurlsa_credman_package,
 	&kuhl_m_sekurlsa_kdcsvc_package,
-	&kuhl_m_sekurlsa_cloudap_package,
+	// &kuhl_m_sekurlsa_cloudap_package,
 };
 
 const KUHL_M_SEKURLSA_ENUM_HELPER lsassEnumHelpers[] = {
